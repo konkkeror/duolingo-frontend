@@ -1,0 +1,42 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #d0d0d0;
+  padding: 15px 20px;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;;
+}
+
+body {
+  margin: 0;
+}
+
+#categorias {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 40px;
+}
+
+.icono-categoria {
+  background: blue;
+  width: 75px;
+  height: 75px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: 10px solid yellow;
+  border: 8px solid yellow;
+  outline: 7px solid red;
+}
+
+.contenedor-categoria {
+  display: flex;
+  justify-content: center;
+}
+
+#buho {
+  margin: 40px 10px;
+}
