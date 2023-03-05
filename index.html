@@ -5,48 +5,37 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Duolingo</title>
+  <script src="https://kit.fontawesome.com/33c3fc8b29.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
   <nav>
-    <div>Usuario</div>
-    <div>Corona</div>
-    <div>Vidas</div>
+    <div><img onclick="obtenerUsuarios()" src="assets/img/user.png" id="img-usuario-seleccionado"></div>
+    <div id="contenedor-coronas"><i class="fa-solid fa-crown"></i><span></span></div>
+    <div id="contenedor-vidas"><i class="fa-solid fa-heart"></i><span></span></div>
   </nav>
-  <section id="buho">
-    Buho
-  </section>
-  <main id="categorias">
-    <div class="contenedor-categoria">
-      <div class="icono-categoria">
-          1
-      </div>
-    </div>
-    <div class="contenedor-categoria">
-      <div class="icono-categoria">
-          2
-      </div>
-    </div>
-    <div class="contenedor-categoria">
-      <div class="icono-categoria">
-          3
-      </div>
-    </div>
-    <div class="contenedor-categoria">
-      <div class="icono-categoria">
-          4
-      </div>
-    </div>
-    <div class="contenedor-categoria">
-      <div class="icono-categoria">
-          5
-      </div>
-    </div>
-    <div class="contenedor-categoria">
-      <div class="icono-categoria">
-          6
-      </div>
+  <main id="seccion-categorias">
+    <section id="buho">
+      Buho
+    </section>
+    <section id="categorias">
+      
+    </section>
+  </main>
+  <main id="seccion-preguntas">
+    Seccion preguntas
+    <div>
+      <button type="button" onclick="mostrarListaCategorias()">Ver categorias</button>
     </div>
   </main>
+  <main id="seccion-usuarios">
+    <div id="lista-usuarios">
+      
+    </div>
+    <div>
+      <button type="button" onclick="mostrarListaCategorias()">Ver categorias</button>
+    </div>
+  </main>
+  <script src="assets/js/controlador.js"></script>
 </body>
 </html>
