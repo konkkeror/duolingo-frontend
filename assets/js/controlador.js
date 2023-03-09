@@ -5,6 +5,8 @@
 var usuarios = [];
 var categorias = [];
 var usuarioSeleccionado = {};
+var preguntas = [];
+var preguntaActual = 0;
 
 const obtenerCategorias = () => {
   fetch('http://localhost:3001/categorias', {
@@ -27,7 +29,7 @@ const renderizarCategorias = () => {
   categorias.forEach(categoria => {
     document.getElementById('categorias').innerHTML +=
       `<div class="contenedor-categoria">
-          <div class="icono-categoria" onclick="mostrarListaPreguntas()" style="background-color: ${categoria.color}">
+          <div id="${categoria.id}" class="icono-categoria" onclick="obtenerPreguntas(${categoria.id})" style="background-color: ${categoria.color}">
               <i class="${categoria.icono}"></i>
           </div>
           <div>${categoria.nombre}</div>
@@ -53,6 +55,40 @@ const obtenerUsuarios = () => {
   }); 
 }
 
+const obtenerPreguntas = (idCategoria) => {
+  console.log("Obtener preguntas de la categoria", idCategoria);
+  fetch(`http://localhost:3001/categorias/${idCategoria}/preguntas`, {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json", //MIME Type
+    }
+  }).then((res) => res.json())
+  .then((res) => {
+    preguntas = res;
+    console.log('Preguntas', res);
+    renderizarPregunta();
+    mostrarListaPreguntas();
+  }); 
+}
+
+const renderizarPregunta = () => {
+  const pregunta = preguntas[preguntaActual];
+  document.getElementById('indice-pregunta-actual').innerHTML = `${preguntaActual + 1}/${preguntas.length}`;
+  document.getElementById('pregunta').innerHTML = pregunta.palabra;
+  document.getElementById('respuestas').innerHTML = '';
+  pregunta.respuestas.forEach(respuesta => {
+    document.getElementById('respuestas').innerHTML += 
+        `<div class="respuesta">
+          ${respuesta.palabra}
+        </div>`;
+  });
+}
+
+const siguientePregunta = () => {
+  preguntaActual ++;
+  renderizarPregunta();
+}
+
 const renderizarUsuarios = () => {
   document.getElementById('lista-usuarios').innerHTML = '';
   usuarios.forEach(usuario => {
@@ -64,7 +100,6 @@ const renderizarUsuarios = () => {
         </div>
       </div>`;
   });
-  
 }
 
 const seleccionarUsuario = (idUsuario) => {
@@ -83,6 +118,19 @@ const seleccionarUsuario = (idUsuario) => {
     document.getElementById('img-usuario-seleccionado').setAttribute('src', 'assets/img/' + usuarioSeleccionado.imagenPerfil);
     document.querySelector('#contenedor-coronas span').innerHTML = usuario.coronas;
     document.querySelector('#contenedor-vidas span').innerHTML = usuario.vidas;
+
+    //Quitar la clase css de completada a todas las categorías
+    categorias.forEach(categoria => {
+      document.getElementById(categoria.id).classList.remove('completada'); 
+    });
+
+    // Marcar las categorias completadas.
+    usuarioSeleccionado.resultados.forEach(categoria => {
+      if (categoria.aprobada) {
+        document.getElementById(categoria.category).classList.add('completada'); 
+      }
+    });
+
     mostrarListaCategorias();
   }); 
 }
