@@ -137,8 +137,14 @@ body {
   padding-top: 50px;
 }
 
-.respuesta.seleccionada {
+.respuesta.correcta {
   background-color: #77c801;
+  color: #fff;
+  font-weight: bold;
+}
+
+.respuesta.incorrecta {
+  background-color: #dd0d45;
   color: #fff;
   font-weight: bold;
 }

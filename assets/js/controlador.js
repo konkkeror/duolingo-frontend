@@ -7,6 +7,18 @@ var categorias = [];
 var usuarioSeleccionado = {};
 var preguntas = [];
 var preguntaActual = 0;
+var resultado = {}
+
+const inicializarResultados = () => {
+  resultado = {
+    aprobada: false,
+    category: 0,
+    correctas: 0,
+    incorrectas: 0
+  }
+};
+
+inicializarResultados();
 
 const obtenerCategorias = () => {
   fetch('http://localhost:3001/categorias', {
@@ -56,6 +68,7 @@ const obtenerUsuarios = () => {
 }
 
 const obtenerPreguntas = (idCategoria) => {
+  resultado.category = idCategoria;
   console.log("Obtener preguntas de la categoria", idCategoria);
   fetch(`http://localhost:3001/categorias/${idCategoria}/preguntas`, {
     method: 'GET',
@@ -76,9 +89,9 @@ const renderizarPregunta = () => {
   document.getElementById('indice-pregunta-actual').innerHTML = `${preguntaActual + 1}/${preguntas.length}`;
   document.getElementById('pregunta').innerHTML = pregunta.palabra;
   document.getElementById('respuestas').innerHTML = '';
-  pregunta.respuestas.forEach(respuesta => {
+  pregunta.respuestas.forEach((respuesta, index) => {
     document.getElementById('respuestas').innerHTML += 
-        `<div class="respuesta">
+        `<div class="respuesta" onclick="seleccionarRespuesta(${index}, this)">
           ${respuesta.palabra}
         </div>`;
   });
@@ -86,6 +99,19 @@ const renderizarPregunta = () => {
 
 const siguientePregunta = () => {
   preguntaActual ++;
+  if (preguntaActual >= preguntas.length) {
+    if (resultado.correctas == preguntas.length && resultado.incorrectas == 0) {
+      resultado.aprobada = true;
+      alert("Felicidades!!!");
+    } else {
+      alert("Fin del cuestionario, suerte a la próxima");
+    }
+
+    mostrarListaCategorias();
+    preguntaActual = 0;
+    inicializarResultados();
+    return;
+  }
   renderizarPregunta();
 }
 
@@ -133,6 +159,25 @@ const seleccionarUsuario = (idUsuario) => {
 
     mostrarListaCategorias();
   }); 
+}
+
+const seleccionarRespuesta = (index, etiqueta) => {
+  if (preguntas[preguntaActual].contestada) {
+    alert("Ya seleccionó una respuesta, haga click en continuar");
+    return;
+  }
+
+  const respuesta = preguntas[preguntaActual].respuestas[index];
+  console.log("Respuesta seleccionada", respuesta);
+  if (respuesta.correcta) {
+    etiqueta.classList.add('correcta');
+    resultado.correctas++;
+  } else {
+    etiqueta.classList.add('incorrecta');
+    resultado.incorrectas++;
+  }
+  preguntas[preguntaActual].contestada = true;
+  console.log('Resultado: ', resultado);
 }
 
 // Paradigma funcional
